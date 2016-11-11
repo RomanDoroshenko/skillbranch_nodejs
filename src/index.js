@@ -9,11 +9,48 @@ app.get('/', (req, res) => {
   });
 });
 
-app.get('/task2A',(req, res) => {
-	const sum = (+req.query.a || 0) + (+req.query.b || 0);
-	res.send(sum.toString());
+app.get('/task2B',(req, res) => {
+
+	res.send(canonize(req.query.fullname));
 });
 
-app.listen(3000, () => {
-  console.log('Your app listening on port 3000!');
+app.listen(8080, () => {
+  console.log('Your app listening on port 8080!');
 });
+
+
+// Canonization func
+
+function canonize(fullname){
+    var re =  /\d/;
+    var output = "";
+
+	if(!fullname || (re.test(fullname))){
+		output = "Invalid fullname";
+		return output;
+	}
+
+	
+
+	fullname = fullname.split(" ");
+
+	if(fullname.length > 3 || fullname.length < 1) {
+		output += "Invalid fullname";
+		return output;
+	}
+
+	output += fullname[fullname.length - 1] + " ";
+	fullname.pop();
+	
+
+	for (var prop in fullname) {
+
+	output += fullname[prop].slice(0,1) + ". ";
+
+	}
+
+	
+	return output.trim();
+    console.log(output);
+}
+
