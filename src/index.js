@@ -9,9 +9,11 @@ app.get('/', (req, res) => {
   });
 });
 
-app.get('/task2B',(req, res) => {
 
-	res.send(canonize(req.query.fullname));
+app.get('/task2C',(req, res) => {
+
+	res.send(canonize(req.query.username));
+	console.log(req.query.username);
 });
 
 app.listen(8080, () => {
@@ -19,38 +21,18 @@ app.listen(8080, () => {
 });
 
 
+
 // Canonization func
 
-function canonize(fullname){
-    var re =  /\d/;
-    var output = "";
+function canonize(name){
 
-	if(!fullname || (re.test(fullname))){
-		output = "Invalid fullname";
-		return output;
-	}
+    var re = /@|((\w+?:)?(\/+)?(\w+)?(\.\w+){1,2}?\/)|\?.+/gi,
+        username;
 
-	
+	if(!name) return 'invalid username';
 
-	fullname = fullname.split(" ");
+	username = name.replace(re,"");
 
-	if(fullname.length > 3 || fullname.length < 1) {
-		output += "Invalid fullname";
-		return output;
-	}
-
-	output += fullname[fullname.length - 1] + " ";
-	fullname.pop();
-	
-
-	for (var prop in fullname) {
-
-	output += fullname[prop].slice(0,1) + ". ";
-
-	}
-
-	
-	return output.trim();
-    console.log(output);
+	return "@" + username;
 }
 
